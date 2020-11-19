@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: microservice-config-bus-client # 编写应用的名称
+
+  cloud:
+    stream:
+      kafka:
+        binder:
+          brokers: 39.99.175.175

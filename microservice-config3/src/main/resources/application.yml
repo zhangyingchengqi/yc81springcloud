@@ -1,0 +1,44 @@
+#server:
+#  port: 7101  # config server的端口
+#
+#spring:
+#  security:
+#    user:
+#      name: admin
+#      password: a
+#  application:
+#    name: microservice-config
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/zhangyingchengqi/microservice_config.git   #github中仓库的地址
+#          default-label: main        # 一定要配置，因为github升级后，已经没有 master 分支了， 而config server 默认是 master,  现在已经是 main
+
+
+server:
+  port: 7103
+
+spring:
+  security:
+    user:
+      name: admin
+      password: a
+  application:
+    name: microservice-config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/zhangyingchengqi/microservice_config.git
+          default-label: main        # 一定要配置，因为github升级后，已经没有 master 分支了， 而config server 默认是 master,  现在已经是 main
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:a@localhost:7301/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: microservice-config3   #实例名
+    lease-expiration-duration-in-seconds: 90  #如果现在超过了5s的时间间隔( default: 90 s )
+    lease-renewal-interval-in-seconds: 30   #设置心跳的时间间隔( default:30s )

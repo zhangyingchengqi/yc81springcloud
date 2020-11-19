@@ -1,0 +1,51 @@
+server:
+  port: 9501
+
+eureka:
+  client: # 客户端进行Eureka注册的配置
+    service-url:
+      defaultZone: http://admin:a@eureka1:7001/eureka,http://admin:a@eureka2:7002/eureka,http://admin:a@eureka3:7003/eureka
+    register-with-eureka: true      #注册到eureka
+  instance:
+    instance-id: microservice-zuul-gateway
+    prefer-ip-address: true
+    lease-renewal-interval-in-seconds: 2    #设置心跳间隔时间
+    lease-expiration-duration-in-seconds: 5  # 租约超时时间间隔
+
+spring:
+  application:
+    name:  microservice-zuul-gateway
+  security:
+    user:
+      name: admin
+      password: b
+
+
+
+#zuul:
+#  routes:    #路由配置
+#    microservice-provider-user:  /user-proxy/**    #   **代表任意级数的目录
+#  ignored-services:      #在zuul的路由中隐藏服务名
+#    "*"     # "*"代表所有的服务名都隐藏
+
+zuul:
+  routes:
+    user:
+      path: /user-proxy/**      #   语法:  <router>.path: 路由路径
+      serviceId: microservice-provider-user  #<router>.serviceId: 服务id      这样可以启用负载均衡
+
+    user2:        #传统的路由方式
+      path: /user2-proxy/**
+      url: http://localhost:5555/   #这里是直接访问服务,所以没有负载均衡
+    product:
+      path: /product-proxy/**
+      serviceId: MICROSERVICE-PROVIDER
+      sensitiveHeaders:
+  ignored-services:
+    "*"
+  prefix: /yc-api    #公共前缀
+
+logging:
+  level:
+    com.yc.springcloud812: debug
+    org.springframework.boot.autoconfigure.security: debug
